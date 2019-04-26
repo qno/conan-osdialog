@@ -54,6 +54,8 @@ class OSDialogConan(ConanFile):
 cmake_minimum_required(VERSION 3.5)
 project(OSDialog)
 
+set (CMAKE_C_STANDARD 11)
+
 include(${{CMAKE_BINARY_DIR}}/conanbuildinfo.cmake)
 conan_basic_setup()
 
@@ -68,8 +70,6 @@ elseif (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 else ()
    message(FATAL_ERROR "This platform '${{CMAKE_SYSTEM_NAME}}'is not supported by this library")
 endif ()
-
-message ("XXXXXXXXXXXXXX DEBUG - REMOVE THIS MESSAGE PLATFORM_SOURCE - ${{PLATFORM_SOURCE}}")
 
 set(SOURCES osdialog.c ${{PLATFORM_SOURCE}})
 
