@@ -81,6 +81,12 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
    target_compile_definitions(${{LIBOSDIALOG}} PRIVATE GTK2_DEFINITIONS)
    target_link_libraries(${{LIBOSDIALOG}} PRIVATE ${{GTK2_LIBRARIES}})
 endif ()
+
+if (MSVC)
+   target_compile_options(${{LIBOSDIALOG}} PRIVATE /Wall /WX)
+else ()
+   target_compile_options(${{LIBOSDIALOG}} PRIVATE -Wall -Wextra -pedantic -Werror)
+endif ()
 '''.format(self._libname)
 
         self.output.info("create CMakeLists.txt file")
