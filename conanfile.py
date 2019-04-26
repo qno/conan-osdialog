@@ -83,9 +83,9 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
 endif ()
 
 if (MSVC)
-   target_compile_options(${{LIBOSDIALOG}} PRIVATE /Wall /WX)
+   target_compile_options(${{LIBOSDIALOG}} PRIVATE /Wall)
 else ()
-   target_compile_options(${{LIBOSDIALOG}} PRIVATE -Wall -Wextra -pedantic -Werror)
+   target_compile_options(${{LIBOSDIALOG}} PRIVATE -Wall -Wextra -pedantic)
 endif ()
 '''.format(self._libname)
 
