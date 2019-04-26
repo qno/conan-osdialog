@@ -99,6 +99,8 @@ jobs:
         inputs:
          versionSpec: $(python-version)
       - script: |
+          # install gtk2 build dependencies
+          export CONAN_DOCKER_ENTRY_SCRIPT="sudo apt update -y && sudo apt install -y libgtk2.0-dev"
           export PATH="$PATH:/home/vsts/.local/bin"
           sudo apt install -y python3-setuptools
           pip install --user --upgrade pip

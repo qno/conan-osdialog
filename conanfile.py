@@ -74,6 +74,13 @@ message ("XXXXXXXXXXXXXX DEBUG - REMOVE THIS MESSAGE PLATFORM_SOURCE - ${{PLATFO
 set(SOURCES osdialog.c ${{PLATFORM_SOURCE}})
 
 add_library(${{LIBOSDIALOG}} ${{SOURCES}})
+
+if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
+   find_package(GTK2 REQUIRED)
+   target_include_directories(${{LIBOSDIALOG}} PRIVATE ${{GTK2_INCLUDE_DIRS}})
+   target_compile_definitions(${{LIBOSDIALOG}} PRIVATE GTK2_DEFINITIONS)
+   target_link_libraries(${{LIBOSDIALOG}} PRIVATE ${{GTK2_LIBRARIES}})
+endif ()
 '''.format(self._libname)
 
         self.output.info("create CMakeLists.txt file")
