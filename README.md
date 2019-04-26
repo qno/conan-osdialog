@@ -1,2 +1,5 @@
 # conan-osdialog
-A conan recipe for OsDialog.
+A [conan](https://conan.io/) recipe for [OSDialog](https://github.com/AndrewBelt/osdialog).
+***
+
+***
