@@ -29,10 +29,6 @@ class OSDialogConan(ConanFile):
         if self._isVisualStudioBuild() and self.options.shared:
             raise ConanInvalidConfiguration("This library doesn't support dll's on Windows")
 
-    def configure(self):
-        if self._isVisualStudioBuild() and self.options.shared:
-            raise ConanInvalidConfiguration("This library doesn't support dll's on Windows")
-
     def build(self):
         cmake = CMake(self)
         cmake.configure(source_dir=self._pkg_name)
