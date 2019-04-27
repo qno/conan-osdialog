@@ -51,6 +51,8 @@ class OSDialogConan(ConanFile):
             for lib in pkg_config.libs_only_l:
                 self.cpp_info.libs.append(lib[2:])
 
+        if self.settings.os == "Windows":
+            self.cpp_info.libs.append("comdlg32")
 
     def _isVisualStudioBuild(self):
         return self.settings.os == "Windows" and self.settings.compiler == "Visual Studio"
