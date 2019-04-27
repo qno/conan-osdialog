@@ -54,6 +54,9 @@ class OSDialogConan(ConanFile):
         if self.settings.os == "Windows":
             self.cpp_info.libs.append("comdlg32")
 
+        if self.settings.os == "Macos":
+            self.cpp_info.exelinkflags.append("-framework AppKit")
+
     def _isVisualStudioBuild(self):
         return self.settings.os == "Windows" and self.settings.compiler == "Visual Studio"
 
