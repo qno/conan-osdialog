@@ -20,6 +20,37 @@ class OSDialogConan(ConanFile):
     _pkg_name = "osdialog-master"
     _libname = "osdialog"
 
+    def system_requirements(self):
+        if tools.os_info.is_linux:
+            if tools.os_info.with_apt:
+                installer = tools.SystemPackageTool()
+                if self.settings.arch == "x86" and tools.detected_architecture() == "x86_64":
+                    arch_suffix = ':i386'
+                    installer.install("g++-multilib")
+                else:
+                    arch_suffix = ''
+                installer.install("{}{}".format("libgtk2.0-dev", arch_suffix))
+            elif tools.os_info.with_yum:
+                installer = tools.SystemPackageTool()
+                if self.settings.arch == "x86" and tools.detected_architecture() == "x86_64":
+                    arch_suffix = '.i686'
+                else:
+                    arch_suffix = ''
+                installer.install("{}{}".format("gtk2-devel", arch_suffix))
+            elif tools.os_info.with_pacman:
+                if self.settings.arch == "x86" and tools.detected_architecture() == "x86_64":
+                    # Note: The packages with the "lib32-" prefix will only be
+                    # available if the user has activate Arch's multilib
+                    # repository, See
+                    # https://wiki.archlinux.org/index.php/official_repositories#multilib
+                    arch_suffix = 'lib32-'
+                else:
+                    arch_suffix = ''
+                installer = tools.SystemPackageTool()
+                installer.install("{}{}".format(arch_suffix, "gtk2"))
+            else:
+                self.output.warn("Could not determine package manager, skipping Linux system requirements installation.")
+
     def source(self):
         url = "https://github.com/AndrewBelt/osdialog/archive/master.zip"
         self.output.info("Downloading {}".format(url))
