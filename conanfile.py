@@ -1,4 +1,5 @@
 from conans import ConanFile, CMake, tools
+from conans.client.tools.pkg_config import PkgConfig
 from conans.errors import ConanInvalidConfiguration
 import os
 
@@ -45,8 +46,11 @@ class OSDialogConan(ConanFile):
     def package_info(self):
         self.cpp_info.libs = [self._libname]
 
-        # libs for Linux gtk "gtk-x11-2.0", "gdk-x11-2.0", "pangocairo-1.0", "atk-1.0", "cairo", "gdk_pixbuf-2.0", "gio-2.0", "pangoft2-1.0", "pango-1.0", "gobject-2.0", "glib-2.0", "fontconfig", "freetype"
-        # this libs must be determined by "pkg-config --libs gtk+-2.0" under Linux
+        if self.settings.os == "Linux":
+            pkg_config = PkgConfig("gtk+-2.0")
+            for lib in pkg_config.libs_only_l:
+                self.cpp_info.libs.append(lib[2:])
+
 
     def _isVisualStudioBuild(self):
         return self.settings.os == "Windows" and self.settings.compiler == "Visual Studio"
