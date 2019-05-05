@@ -5,17 +5,24 @@ import os
 
 class OSDialogConan(ConanFile):
     name = "OSDialog"
-    version = "master"
+    version = "latest"
     license = "CC0"
     author = "Andrew Belt"
     url = "https://github.com/qno/conan-osdialog"
+    homepage = "https://github.com/AndrewBelt/osdialog"
     description = "A cross platform wrapper for OS dialogs like file save, open, message boxes, inputs, color picking, etc."
 
     settings = "os", "compiler", "build_type", "arch"
     generators = "cmake"
 
-    options = {"shared": [True, False]}
-    default_options = "shared=False"
+    options = {
+        "shared": [True, False],
+        "fPIC": [True, False]
+        }
+    default_options = {
+        "shared": False,
+         "fPIC": True
+         }
 
     _pkg_name = "osdialog-master"
     _libname = "osdialog"
@@ -58,8 +65,10 @@ class OSDialogConan(ConanFile):
         self._createCMakeLists()
 
     def configure(self):
-        if self._isVisualStudioBuild() and self.options.shared:
-            raise ConanInvalidConfiguration("This library doesn't support dll's on Windows")
+        del self.settings.compiler.libcxx
+        del self.options.fPIC
+        if self.options.shared:
+            raise ConanInvalidConfiguration("This library doesn't support shared lib compilation")
 
     def build(self):
         cmake = CMake(self)
