@@ -15,7 +15,7 @@ os.environ["CONAN_CHANNEL"]                 = "testing"
 
 
 def _is_static_msvc_build(build):
-  if build.options["OSDialog:shared"] == True and build.settings["compiler"] != "Visual Studio":
+  if build.options["OSDialog:shared"] == True:
     return False
   else:
     return True
