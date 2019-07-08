@@ -37,6 +37,7 @@ class OSDialogConan(ConanFile):
                 else:
                     arch_suffix = ''
                 installer.install("{}{}".format("libgtk2.0-dev", arch_suffix))
+                installer.install("{}{}".format("libgtk-3-dev", arch_suffix))
             elif tools.os_info.with_yum:
                 installer = tools.SystemPackageTool()
                 if self.settings.arch == "x86" and tools.detected_architecture() == "x86_64":
@@ -44,6 +45,7 @@ class OSDialogConan(ConanFile):
                 else:
                     arch_suffix = ''
                 installer.install("{}{}".format("gtk2-devel", arch_suffix))
+                installer.install("{}{}".format("gtk3-devel", arch_suffix))
             elif tools.os_info.with_pacman:
                 if self.settings.arch == "x86" and tools.detected_architecture() == "x86_64":
                     # Note: The packages with the "lib32-" prefix will only be
@@ -55,6 +57,7 @@ class OSDialogConan(ConanFile):
                     arch_suffix = ''
                 installer = tools.SystemPackageTool()
                 installer.install("{}{}".format(arch_suffix, "gtk2"))
+                installer.install("{}{}".format(arch_suffix, "gtk3"))
             else:
                 self.output.warn("Could not determine package manager, skipping Linux system requirements installation.")
 
