@@ -90,7 +90,7 @@ class OSDialogConan(ConanFile):
         self.cpp_info.libs = [self._libname]
 
         if self.settings.os == "Linux":
-            pkg_config = PkgConfig("gtk+-2.0")
+            pkg_config = PkgConfig("gtk+-3.0")
             for lib in pkg_config.libs_only_l:
                 self.cpp_info.libs.append(lib[2:])
 
@@ -119,7 +119,7 @@ set(LIBOSDIALOG "{}")
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
    set(PLATFORM_SOURCE osdialog_win.c)
 elseif (CMAKE_SYSTEM_NAME STREQUAL "Linux")
-   set(PLATFORM_SOURCE osdialog_gtk2.c)
+   set(PLATFORM_SOURCE osdialog_gtk3.c)
 elseif (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
    set(PLATFORM_SOURCE osdialog_mac.m)
 else ()
@@ -131,10 +131,10 @@ set(SOURCES osdialog.c ${{PLATFORM_SOURCE}})
 add_library(${{LIBOSDIALOG}} ${{SOURCES}})
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
-   find_package(GTK2 REQUIRED)
-   target_include_directories(${{LIBOSDIALOG}} PRIVATE ${{GTK2_INCLUDE_DIRS}})
-   target_compile_definitions(${{LIBOSDIALOG}} PRIVATE GTK2_DEFINITIONS)
-   target_link_libraries(${{LIBOSDIALOG}} PRIVATE ${{GTK2_LIBRARIES}})
+   find_package(GTK3 REQUIRED)
+   target_include_directories(${{LIBOSDIALOG}} PRIVATE ${{GTK3_INCLUDE_DIRS}})
+   target_compile_definitions(${{LIBOSDIALOG}} PRIVATE GTK3_DEFINITIONS)
+   target_link_libraries(${{LIBOSDIALOG}} PRIVATE ${{GTK3_LIBRARIES}})
 endif ()
 
 if (MSVC)
