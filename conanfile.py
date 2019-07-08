@@ -36,14 +36,14 @@ class OSDialogConan(ConanFile):
                     installer.install("g++-multilib")
                 else:
                     arch_suffix = ''
-                installer.install("{}{}".format("libgtk2.0-dev", arch_suffix))
+                installer.install("{}{}".format("libgtk-3-dev", arch_suffix))
             elif tools.os_info.with_yum:
                 installer = tools.SystemPackageTool()
                 if self.settings.arch == "x86" and tools.detected_architecture() == "x86_64":
                     arch_suffix = '.i686'
                 else:
                     arch_suffix = ''
-                installer.install("{}{}".format("gtk2-devel", arch_suffix))
+                installer.install("{}{}".format("gtk3-devel", arch_suffix))
             elif tools.os_info.with_pacman:
                 if self.settings.arch == "x86" and tools.detected_architecture() == "x86_64":
                     # Note: The packages with the "lib32-" prefix will only be
@@ -54,7 +54,7 @@ class OSDialogConan(ConanFile):
                 else:
                     arch_suffix = ''
                 installer = tools.SystemPackageTool()
-                installer.install("{}{}".format(arch_suffix, "gtk2"))
+                installer.install("{}{}".format(arch_suffix, "gtk3"))
             else:
                 self.output.warn("Could not determine package manager, skipping Linux system requirements installation.")
 
@@ -87,7 +87,7 @@ class OSDialogConan(ConanFile):
         self.cpp_info.libs = [self._libname]
 
         if self.settings.os == "Linux":
-            pkg_config = PkgConfig("gtk+-2.0")
+            pkg_config = PkgConfig("gtk+-3.0")
             for lib in pkg_config.libs_only_l:
                 self.cpp_info.libs.append(lib[2:])
 
@@ -116,7 +116,7 @@ set(LIBOSDIALOG "{}")
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
    set(PLATFORM_SOURCE osdialog_win.c)
 elseif (CMAKE_SYSTEM_NAME STREQUAL "Linux")
-   set(PLATFORM_SOURCE osdialog_gtk2.c)
+   set(PLATFORM_SOURCE osdialog_gtk3.c)
 elseif (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
    set(PLATFORM_SOURCE osdialog_mac.m)
 else ()
@@ -128,10 +128,10 @@ set(SOURCES osdialog.c ${{PLATFORM_SOURCE}})
 add_library(${{LIBOSDIALOG}} ${{SOURCES}})
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
-   find_package(GTK2 REQUIRED)
-   target_include_directories(${{LIBOSDIALOG}} PRIVATE ${{GTK2_INCLUDE_DIRS}})
-   target_compile_definitions(${{LIBOSDIALOG}} PRIVATE GTK2_DEFINITIONS)
-   target_link_libraries(${{LIBOSDIALOG}} PRIVATE ${{GTK2_LIBRARIES}})
+   find_package(GTK REQUIRED)
+   target_include_directories(${{LIBOSDIALOG}} PRIVATE ${{GTK_INCLUDE_DIRS}})
+   target_compile_definitions(${{LIBOSDIALOG}} PRIVATE GTK_DEFINITIONS)
+   target_link_libraries(${{LIBOSDIALOG}} PRIVATE ${{GTK_LIBRARIES}})
 endif ()
 
 if (MSVC)
